@@ -25,7 +25,7 @@ const gendiff = (data1, data2) => {
     const stage = getStage(key);
     return `${acc}\n ${stage}`;
   }, '');
-  return `{\n${diff}\n}`;
+  return `{${diff}\n}`;
 };
 
 const json = (filepath1, filepath2) => {
