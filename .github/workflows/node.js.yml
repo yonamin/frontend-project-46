@@ -29,11 +29,10 @@ jobs:
     - run: make install
     - run: make lint
     - run: make test
-
     - name: Test & publish code coverage
     uses: paambaati/codeclimate-action@v3.2.0
     env:
-      CC_TEST_REPORTER_ID: 13f584ae223c5529e6a40f1391f1295b1a1d4ac08a503c4af59bd6d7c3cc3a04
+      CC_TEST_REPORTER_ID: ${{ secrets.FRONTEND_PROJECT_46 }}
     with:
       coverageCommand: make test-coverage
       debug: true
