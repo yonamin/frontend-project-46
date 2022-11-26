@@ -1,5 +1,4 @@
-import { dirname } from 'path';
-import path from 'path';
+import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import genDiff from '../src/index.js';
 
@@ -19,5 +18,5 @@ const difference = `{
 }`;
 
 test('generation difference', () => {
-expect(genDiff(file1, file2)).toEqual(difference);
+  expect(genDiff(file1, file2)).toEqual(difference);
 });
