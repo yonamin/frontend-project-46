@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { program } from 'commander';
 import compare from '../src/index.js';
-import stylish from '../src/stylish.js';
 
 program
   .name('gendiff')
@@ -10,8 +9,8 @@ program
   .arguments('<filepath1> <filepath2>')
   .option('-f, --format <type>', 'output format', 'stylish')
   .action((filepath1, filepath2) => {
-    const format = program.opts().format
-    switch(format) {
+    const { format } = program.opts();
+    switch (format) {
       case ('stylish'):
         console.log(compare(filepath1, filepath2, 'stylish'));
         break;
