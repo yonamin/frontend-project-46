@@ -44,6 +44,7 @@ const gendiff = (file1, file2) => {
   };
   return diff(file1, file2);
 };
+
 export default (filepath1, filepath2, format = 'stylish') => {
   const extname1 = path.extname(filepath1);
   const extname2 = path.extname(filepath2);
