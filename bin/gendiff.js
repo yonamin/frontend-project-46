@@ -10,16 +10,7 @@ program
   .option('-f, --format <type>', 'output format', 'stylish')
   .action((filepath1, filepath2) => {
     const { format } = program.opts();
-    switch (format) {
-      case ('stylish'):
-        console.log(compare(filepath1, filepath2, 'stylish'));
-        break;
-      case ('plain'):
-        console.log(compare(filepath1, filepath2, 'plain'));
-        break;
-      default:
-        console.log('Unknown format');
-    }
+    console.log(compare(filepath1, filepath2, format));
   });
 
 program.parse();
