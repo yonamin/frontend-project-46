@@ -10,40 +10,34 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat(indentSize - 2);
 
-    const currentVal = _.isPlainObject(item) ? Object.entries(item) : item;
-    const lines = currentVal.flatMap((node) => {
+    const getLines = (arr) => arr.flatMap((node) => {
       const { stage } = node;
       if (!stage) {
         const [key, value] = node;
         return `${currentIndent}  ${key}: ${stringify(value, depth + 1)}`;
       }
-      const getSign = (status) => {
-        switch (status) {
-          case 'added':
-            return '+';
-          case 'removed':
-            return '-';
-          default:
-            return ' ';
-        }
-      };
-
-      const sign = getSign(stage);
-      const key = `${sign} ${node.name}`;
+      const key = node.name;
       const value = stringify(node.value, depth + 1);
-
-      if (stage === 'nested') {
-        return `${currentIndent}${key}: ${stringify(node.children, depth + 1)}`;
+      switch (stage) {
+        case 'added':
+          return `${currentIndent}+ ${key}: ${value}`;
+        case 'removed':
+          return `${currentIndent}- ${key}: ${value}`;
+        case 'nested':
+          return `${currentIndent}  ${key}: ${stringify(node.children, depth + 1)}`;
+        case 'updated': {
+          const removed = stringify(node.value.removed, depth + 1);
+          const added = stringify(node.value.added, depth + 1);
+          return `${currentIndent}- ${node.name}: ${removed}\n${currentIndent}+ ${node.name}: ${added}`;
+        }
+        case 'unchanged':
+          return `${currentIndent}  ${key}: ${value}`;
+        default:
+          return `Unknown stage ${stage}`;
       }
-      if (stage === 'updated') {
-        const removed = stringify(node.value.removed, depth + 1);
-        const added = stringify(node.value.added, depth + 1);
-        return `${currentIndent}- ${node.name}: ${removed}\n${currentIndent}+ ${node.name}: ${added}`;
-      }
-
-      return `${currentIndent}${key}: ${value}`;
     });
-
+    const currentVal = _.isPlainObject(item) ? Object.entries(item) : item;
+    const lines = getLines(currentVal);
     return [
       '{',
       ...lines,

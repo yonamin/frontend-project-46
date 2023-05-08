@@ -1,4 +1,3 @@
-import json from './json.js';
 import plain from './plain.js';
 import stylish from './stylish.js';
 
@@ -10,7 +9,7 @@ const chooseFormat = (data, format) => {
     return plain(data);
   }
   if (format === 'json') {
-    return json(data);
+    return JSON.stringify(data);
   }
   return 'Unknown format';
 };

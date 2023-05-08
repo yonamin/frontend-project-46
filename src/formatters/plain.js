@@ -12,7 +12,7 @@ const normalizeValue = (item) => {
 
 const plain = (tree) => {
   const iter = (item, ancestry) => {
-    const lines = item
+    const getLines = (arr) => arr
       .filter((node) => node.stage !== 'unchanged')
       .flatMap((node) => {
         const { stage } = node;
@@ -21,26 +21,22 @@ const plain = (tree) => {
         if (stage === 'nested') {
           return iter(node.children, newAncestry);
         }
-        const getTail = (status) => {
-          const value = normalizeValue(node.value);
-          switch (status) {
-            case 'added':
-              return `added with value: ${value}`;
-            case 'removed':
-              return 'removed';
-            case 'updated': {
-              const removed = `${normalizeValue(node.value.removed)}`;
-              const added = `${normalizeValue(node.value.added)}`;
-              return `updated. From ${removed} to ${added}`;
-            }
-            default:
-              return `Unknown stage '${status}'`;
+        const value = normalizeValue(node.value);
+        switch (stage) {
+          case 'added':
+            return `Property '${newAncestry.slice(1)}' was added with value: ${value}`;
+          case 'removed':
+            return `Property '${newAncestry.slice(1)}' was removed`;
+          case 'updated': {
+            const removed = `${normalizeValue(node.value.removed)}`;
+            const added = `${normalizeValue(node.value.added)}`;
+            return `Property '${newAncestry.slice(1)}' was updated. From ${removed} to ${added}`;
           }
-        };
-
-        const tail = getTail(stage);
-        return `Property '${newAncestry.slice(1)}' was ${tail}`;
+          default:
+            return `Unknown stage '${stage}'`;
+        }
       });
+    const lines = getLines(item);
     return lines.join('\n');
   };
   return iter(tree, '');
