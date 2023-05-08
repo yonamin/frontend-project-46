@@ -10,33 +10,45 @@ const buildTree = (file1, file2) => {
   const result = keys.map((key) => {
     const value1 = _.cloneDeep(file1[key]);
     const value2 = _.cloneDeep(file2[key]);
-    const node = {};
-    node.name = key;
 
     if (!Object.hasOwn(file1, key)) {
-      node.stage = 'added';
-      node.value = value2;
+      const node = {
+        name: key,
+        stage: 'added',
+        value: value2,
+      };
       return node;
     }
     if (!Object.hasOwn(file2, key)) {
-      node.stage = 'removed';
-      node.value = value1;
+      const node = {
+        name: key,
+        stage: 'removed',
+        value: value1,
+      };
       return node;
     }
     if ((_.isPlainObject(value1)) && (_.isPlainObject(value2))) {
-      node.children = buildTree(value1, value2);
-      node.stage = 'nested';
+      const node = {
+        name: key,
+        children: buildTree(value1, value2),
+        stage: 'nested',
+      };
       return node;
     }
 
     if (value1 === value2) {
-      node.stage = 'unchanged';
-      node.value = value1;
+      const node = {
+        name: key,
+        stage: 'unchanged',
+        value: value1,
+      };
       return node;
     }
-
-    node.stage = 'updated';
-    node.value = { removed: value1, added: value2 };
+    const node = {
+      name: key,
+      stage: 'updated',
+      value: { removed: value1, added: value2 },
+    };
     return node;
   });
   return result;

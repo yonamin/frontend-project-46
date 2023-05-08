@@ -2,15 +2,15 @@ import plain from './plain.js';
 import stylish from './stylish.js';
 
 const chooseFormat = (data, format) => {
-  if (format === 'stylish') {
-    return stylish(data);
+  switch (format) {
+    case 'stylish':
+      return stylish(data);
+    case 'plain':
+      return plain(data);
+    case 'json':
+      return JSON.stringify(data);
+    default:
+      return 'Unknown format';
   }
-  if (format === 'plain') {
-    return plain(data);
-  }
-  if (format === 'json') {
-    return JSON.stringify(data);
-  }
-  return 'Unknown format';
 };
 export default chooseFormat;
