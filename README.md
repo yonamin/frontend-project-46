@@ -9,7 +9,7 @@ Defines the difference between two data structures in JSON or YAML formats.
 
 ## Installation
 ```Bash
-git clone https://github.com/yonamin/frontend-project-46.git
+git clone https://github.com/yonamin/gendiff.git
 cd frontend-project-46/
 make install
 ```
